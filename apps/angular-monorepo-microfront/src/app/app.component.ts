@@ -8,6 +8,6 @@ import { RouterModule } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class ProjAppComponent {
   title = 'angular-monorepo-microfront';
 }

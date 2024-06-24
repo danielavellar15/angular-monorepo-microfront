@@ -7,4 +7,8 @@ export const appRoutes: Route[] = [
     component: HomeComponent,
     pathMatch: 'full',
   },
+  {
+    path: 'auth',
+    loadChildren: () => import('mfe/Component').then((c) => c.ProjAppComponent),
+  },
 ];

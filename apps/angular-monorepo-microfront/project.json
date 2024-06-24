@@ -7,23 +7,34 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:application",
-      "outputs": ["{options.outputPath}"],
+      "executor": "@nx/angular:webpack-browser",
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/angular-monorepo-microfront",
         "index": "apps/angular-monorepo-microfront/src/index.html",
-        "browser": "apps/angular-monorepo-microfront/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "tsConfig": "apps/angular-monorepo-microfront/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/angular-monorepo-microfront/public"
+            "input": "apps/angular-monorepo-microfront/public",
+            "output": "."
           }
         ],
-        "styles": ["apps/angular-monorepo-microfront/src/styles.scss"],
-        "scripts": []
+        "styles": [
+          "apps/angular-monorepo-microfront/src/styles.scss"
+        ],
+        "scripts": [],
+        "main": "apps/angular-monorepo-microfront/src/main.ts",
+        "customWebpackConfig": {
+          "path": "apps/angular-monorepo-microfront/webpack.config.js"
+        },
+        "commonChunk": false
       },
       "configurations": {
         "production": {
@@ -39,7 +50,10 @@
               "maximumError": "4kb"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/angular-monorepo-microfront/webpack.prod.config.js"
+          }
         },
         "development": {
           "optimization": false,
@@ -50,7 +64,7 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
+      "executor": "@nx/angular:dev-server",
       "configurations": {
         "production": {
           "buildTarget": "angular-monorepo-microfront:build:production"
@@ -59,12 +73,17 @@
           "buildTarget": "angular-monorepo-microfront:build:development"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "development",
+      "options": {
+        "port": 4201,
+        "publicHost": "http://localhost:4201"
+      }
     },
     "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "executor": "ngx-build-plus:extract-i18n",
       "options": {
-        "buildTarget": "angular-monorepo-microfront:build"
+        "buildTarget": "angular-monorepo-microfront:build",
+        "extraWebpackConfig": "apps/angular-monorepo-microfront/webpack.config.js"
       }
     },
     "lint": {
@@ -72,7 +91,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/angular-monorepo-microfront/jest.config.ts"
       }
